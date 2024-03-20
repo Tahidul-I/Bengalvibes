@@ -1,0 +1,43 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% block content %}
+<div class="mb-4 pb-4"></div>
+<section class="shop-checkout container">
+  <h2 class="page-title">Order Received</h2>
+  <div class="checkout-steps">
+    <a href="shop_cart.html" class="checkout-steps__item active">
+      <span class="checkout-steps__item-number">01</span>
+      <span class="checkout-steps__item-title">
+        <span>Shopping Bag</span>
+        <em>Manage Your Items List</em>
+      </span>
+    </a>
+    <a href="shop_checkout.html" class="checkout-steps__item active">
+      <span class="checkout-steps__item-number">02</span>
+      <span class="checkout-steps__item-title">
+        <span>Shipping and Checkout</span>
+        <em>Checkout Your Items List</em>
+      </span>
+    </a>
+    <a href="shop_order_complete.html" class="checkout-steps__item active">
+      <span class="checkout-steps__item-number">03</span>
+      <span class="checkout-steps__item-title">
+        <span>Confirmation</span>
+        <em>Review And Submit Your Order</em>
+      </span>
+    </a>
+  </div>
+  <div class="order-complete">
+    <div class="order-complete__message">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+      <h3>Transaction failed. Please try again!</h3>
+      
+    </div>
+    
+    
+  </div>
+</section>
+{% endblock content %}

@@ -1,0 +1,180 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% block content %}
+<div class="mb-4 pb-4"></div>
+<section class="shop-checkout container">
+  <h2 class="page-title">Shipping and Checkout</h2>
+  <div class="checkout-steps">
+    <a href="shop_cart.html" class="checkout-steps__item active">
+      <span class="checkout-steps__item-number">01</span>
+      <span class="checkout-steps__item-title">
+        <span>Shopping Bag</span>
+        <em>Manage Your Items List</em>
+      </span>
+    </a>
+    <a href="shop_checkout.html" class="checkout-steps__item active">
+      <span class="checkout-steps__item-number">02</span>
+      <span class="checkout-steps__item-title">
+        <span>Shipping and Checkout</span>
+        <em>Checkout Your Items List</em>
+      </span>
+    </a>
+    <a href="shop_order_complete.html" class="checkout-steps__item">
+      <span class="checkout-steps__item-number">03</span>
+      <span class="checkout-steps__item-title">
+        <span>Confirmation</span>
+        <em>Review And Submit Your Order</em>
+      </span>
+    </a>
+  </div>
+  <form action="{% url "placeorder" %}" method="POST" id="checkout_detail_form">
+    {% csrf_token %}
+    <div class="checkout-form">
+      <div class="billing-info__wrapper">
+        <h4>BILLING DETAILS</h4>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-floating my-3">    
+              <input name="first_name" required type="text" class="form-control" id="checkout_first_name" placeholder="First Name">
+              <label for="checkout_first_name">First Name *</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-floating my-3">
+              <input name="last_name" required type="text" class="form-control" id="checkout_last_name" placeholder="Last Name">
+              <label for="checkout_last_name">Last Name *</label>
+            </div>
+          </div>
+          <div class="col-md-12">
+            
+            <div class="search-field my-3">
+              <div class="form-label-fixed hover-container">
+                <label for="search-dropdown" class="form-label">City</label>
+                <select name="city" required class="form-control form-control-lg search-field__actor search-field__arrow-down">
+                  <option value="dhaka">Dhaka</option>
+                  <option value="outside-dhaka">Outside Dhaka</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-floating mt-3 mb-3">
+              <input name="address" required type="text" class="form-control" id="checkout_street_address" placeholder="Street Address *">
+              <label for="checkout_company_name">Street Address *</label>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-floating my-3">
+              <input type="text" pattern="[0-9]*" title="Please enter a 4-digit postal code" required name="postal_code" class="form-control" id="checkout_zipcode" minlength="4" maxlength="4"  placeholder="Postcode / ZIP *">
+              <label for="checkout_zipcode">Postcode / ZIP *</label>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-floating my-3">
+              <input name="phone" pattern="[0-9]*" required type="text" title="Please enter 11 digits phone number" class="form-control" id="checkout_phone" minlength="11" maxlength="11" placeholder="Phone *">
+              <label for="checkout_phone">Phone *</label>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-floating my-3">
+              <input name="email" required type="email" class="form-control" id="checkout_email" placeholder="Your Mail *">
+              <label for="checkout_email">Your Mail *</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="mt-3">
+            <textarea name="message" class="form-control form-control_gray" placeholder="Order Notes (optional)" cols="30" rows="8"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="checkout__totals-wrapper">
+        <div class="sticky-content">
+          <div class="checkout__totals">
+            <h3>Your Order</h3>
+            <table class="checkout-cart-items">
+              <thead>
+                <tr>
+                  <th>PRODUCT</th>
+                  <th align="right">SUBTOTAL</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for cart_item in cart_items %}
+                <tr>
+                  <td>
+                    {{ cart_item.product.product.title }} x {{ cart_item.product_quantity }}
+                  </td>
+                  <td align="right">
+                    BDT {{ cart_item.product.selling_price }}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <table class="checkout-totals">
+              <tbody>
+                <tr>
+                  <th>SUBTOTAL</th>
+                  <td align="right">BDT {{ total_price }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="checkout__payment-methods">
+
+            <div class="form-check payment_selection">
+              <input  class="form-check-input form-check-input_fill " value="COD" type="radio" name="payment_mode" id="checkout_payment_method_3" checked>
+             
+              {% comment %} <label>
+                <input type="radio" name="options" value="option1">
+                Option 1
+              </label>
+          
+              <label>
+                <input type="radio" name="options" value="option2">
+                Option 2
+              </label> {% endcomment %}
+          
+              <label class="form-check-label" for="checkout_payment_method_3">
+                Cash on delivery
+                <p class="option-detail">
+                  Inside Dhaka: 100 TK <br>
+                  Outside Dhaka: 120TK
+                </p>
+              </label>
+            </div>
+            <div class="form-check payment_selection">
+              <input  class="form-check-input form-check-input_fill payment_selection" value="PO" type="radio" name="payment_mode" id="checkout_payment_method_3">
+             
+              {% comment %} <label>
+                <input type="radio" name="options" value="option1">
+                Option 1
+              </label>
+          
+              <label>
+                <input type="radio" name="options" value="option2">
+                Option 2
+              </label> {% endcomment %}
+          
+              <label class="form-check-label" for="checkout_payment_method_3">
+                Online Payment
+                <p class="option-detail">
+                  Inside Dhaka: 100 TK <br>
+                  Outside Dhaka: 120TK
+                </p>
+              </label>
+            </div>
+            <div class="policy-text">
+              Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <a href="terms.html" target="_blank">privacy policy</a>.
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary" id="place_order_button">PLACE ORDER</button>
+        </div>
+        <input type="hidden" value="COD" id="payment_method">
+      </div>
+    </div>
+    
+  </form>
+</section>
+{% endblock content %}

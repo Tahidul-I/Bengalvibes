@@ -1,0 +1,42 @@
+{% extends "layout/base.html" %}
+{% block content %}
+<div class="mb-4 pb-4"></div>
+    <section class="my-account container">
+      <h2 class="page-title">Orders</h2>
+      <div class="row">
+        <div class="col-lg-3">
+          <ul class="account-nav">
+            <li><a href="{% url "user_profile" %}" class="menu-link menu-link_us-s">Dashboard</a></li>
+            <li><a href="{% url "user-orders" %}" class="menu-link menu-link_us-s menu-link_active">Orders</a></li>
+            <li><a href="{% url 'logout' %}" class="menu-link menu-link_us-s">Logout</a></li>    
+          </ul>
+        </div>
+        <div class="col-lg-9">
+          <div class="page-content my-account__orders-list">
+            <table class="orders-table">
+              <thead>
+                <tr>
+                  <th>Tracking No.</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Total</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for order in user_orders %}
+                <tr>
+                  <td>{{ order.tracking_no }}</td>
+                  <td>{{ order.created_at | date:"d-m-Y" }}</td>
+                  <td>{{ order.status }}</td>
+                  <td>{{ order.total_price }} for 3 items</td>
+                  <td><a href="{% url "user-order-details" order.id %}" class="btn btn-primary">VIEW</a></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock content %}

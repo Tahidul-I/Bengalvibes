@@ -1,0 +1,61 @@
+{% for product_variant_id,item in cart_list.items %}
+    <tr class="product_data">
+    <td>
+        <div class="shopping-cart__product-item">
+        <img loading="lazy" src={{item.image}} width="120" height="120" alt="" />
+        </div>
+    </td>
+    <td>
+        <div class="shopping-cart__product-item__detail">
+        <h4>{{ item.title }}</h4>
+        <ul class="shopping-cart__product-item__options">
+            <li>Color: {{ item.color }}</li>
+            <li>Size: {{ item.size }}</li>
+        </ul>
+        </div>
+    </td>
+    <td>
+        <span class="shopping-cart__product-price">BDT {{ item.price }}</span>
+    </td>
+    <td>
+        <input type="hidden" class="product-id" value={{ product_variant_id }}>
+        {% if item.stock_quantity > item.quantity %}
+            <div class="qty-control position-relative">
+            <input type="number" name="quantity" id="product_quantity" value="{{ item.quantity }}"
+                min="1" class="qty-control__number text-center">
+            <div class="qty-control__reduce reduce_changeQuantity_anonymous">-</div>
+            <div class="qty-control__increase increase_changeQuantity_anonymous">+</div>
+            </div><!-- .qty-control -->
+        {% elif item.stock_quantity == item.quantity %}
+            <div class="qty-control position-relative">
+                <input type="number" name="quantity" id="stock_out_quantity" value="{{ item.quantity }}"
+                min="1" class="qty-control__number text-center" data-id = "{{ product_variant_id }}">
+                
+                <div class="qty-control__reduce reduce_changeQuantity_anonymous" data-status="stock">-</div>
+                <div class="qty-control__increase " id="stock_out_btn">+</div>
+            </div><!-- .qty-control -->
+        {% else %}
+            <div class="qty-control position-relative">
+                <input type="number" name="quantity" id="stock_out_quantity" value="{{ item.quantity|add:"-1" }}"
+                min="1" class="qty-control__number text-center" data-id = "{{ product_variant_id }}">
+                
+                <div class="qty-control__reduce reduce_changeQuantity_anonymous" data-status="stock">-</div>
+                <div class="qty-control__increase " id="stock_out_btn">+</div>
+            </div><!-- .qty-control -->
+        {% endif %}
+    </td>
+    <td>
+        <span class="shopping-cart__subtotal">BDT {% widthratio item.price 1 item.quantity|floatformat:0|cut:'.' %}</span>
+    </td>
+    <td>
+        <a class="remove-cart delete-cart-item">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="#767676" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.259435 8.85506L9.11449 0L10 0.885506L1.14494 9.74056L0.259435 8.85506Z" />
+            <path d="M0.885506 0.0889838L9.74057 8.94404L8.85506 9.82955L0 0.97449L0.885506 0.0889838Z" />
+        </svg>
+        </a>
+    </td>
+    
+    </tr>
+    <tr id="empty_cart_row" ><td colspan="6" style="display:none;" ></td></tr>
+{% endfor %}

@@ -1,0 +1,79 @@
+{% extends "layout/base.html" %}
+{% block content %}
+<div class="mb-4 pb-4"></div>
+    <section class="my-account container">
+      <h2 class="page-title">Orders</h2>
+      <div class="row">
+        <div class="col-lg-3">
+          <ul class="account-nav">
+            <li><a href="{% url "user_profile" %}" class="menu-link menu-link_us-s">Dashboard</a></li>
+            <li><a href="{% url "user-orders" %}" class="menu-link menu-link_us-s">Orders</a></li>
+            <li><a href="{% url 'logout' %}" class="menu-link menu-link_us-s">Logout</a></li>
+    
+          </ul>
+        </div>
+        <div class="col-lg-9">
+          <div class="page-content my-account__orders-list">
+            <div class="order-complete m-0">
+              <div class="order-info">
+                <div class="order-info__item">
+                  <label>Tracking  Number:</label>
+                  <span>{{ order.tracking_no }}</span>
+                </div>
+                <div class="order-info__item">
+                  <label>Date</label>
+                  <span>{{ order.created_at | date:"d-m-Y" }}</span>
+                </div>
+                <div class="order-info__item">
+                  <label>Order Status</label>
+                  <span>{{ order.status }}</span>
+                </div>
+                <div class="order-info__item">
+                  <label>Payment Method</label>
+                  <span>{{ order.payment_mode }}</span>
+                </div>
+              </div>
+              <div class="checkout__totals-wrapper">
+                <div class="checkout__totals">
+                  <h3>Order Details</h3>
+                  <table class="checkout-cart-items">
+                    <thead>
+                      <tr>
+                        <th>PRODUCT</th>
+                        <th align="right">SUBTOTAL</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for order_product in order_products %}
+                        <tr>
+                            <td>
+                                {{ order_product.product.product.title }} - {{ order_product.product.color }} - {{ order_product.product.size }} x {{ order_product.quantity }}
+                            </td>
+                            <td align="right">
+                            BDT {{ order_product.total_price }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
+                  <table class="checkout-totals">
+                    <tbody>
+                      <tr>
+                        <th>SHIPPING</th>
+                        <td align="right">BDT {{ delivery_fee }}</td>
+                      </tr>
+                      <tr>
+                        <th>TOTAL</th>
+                        <td align="right">BDT {{ order.total_price }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+{% endblock content %}
